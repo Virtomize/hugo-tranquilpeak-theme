@@ -1,10 +1,18 @@
 {{ $tabs := findRE "<!-- *[Tt][Aa][Bb] +(\\w*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Tt][Aa][Bb] *-->" .Inner }}
+{{ $desc := findRE "<!-- *[Dd][Ee][Ss][Cc] +(\\w*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Dd][Ee][Ss][Cc] *-->" .Inner }}
 {{ range $index,$value := $tabs }}
   {{ $language := replaceRE "<!-- *[Tt][Aa][Bb] +(\\w*) *-->" "$1" (index (findRE "<!-- *[Tt][Aa][Bb] +(\\w*) *-->" .) 0) }}
   {{ $language := lower $language }}
   {{ $content := replaceRE "<!-- *[Tt][Aa][Bb] +(\\w*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Tt][Aa][Bb] *-->" "$2" . }}
   {{ $.Scratch.Add "tc-languages" (slice $language) }}
   {{ $.Scratch.Add "tc-content" (slice $content) }}
+{{ end }}
+{{ range $index,$value := $desc }}
+  {{ $language := replaceRE "<!-- *[Dd][Ee][Ss][Cc] +(\\w*) *-->" "$1" (index (findRE "<!-- *[Dd][Ee][Ss][Cc] +(\\w*) *-->" .) 0) }}
+  {{ $language := lower $language }}
+  {{ $content := replaceRE "<!-- *[Dd][Ee][Ss][Cc] +(\\w*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Dd][Ee][Ss][Cc] *-->" "$2" . }}
+  {{ $.Scratch.Add "dc-languages" (slice $language) }}
+  {{ $.Scratch.Add "dc-content" (slice $content) }}
 {{ end }}
 {{ if .IsNamedParams }}
   {{ $.Scratch.Add "tc-title" (.Get "title") }}
@@ -46,6 +54,13 @@
             </tr>
           </tbody>
         </table>
+        {{ range $dindex, $value := $.Scratch.Get "dc-content" }}
+          {{ if eq ( index ($.Scratch.Get "tc-languages") $index ) ( index ($.Scratch.Get "dc-languages") $dindex ) }}
+          <div class="codeblock--tabbed-description">
+           {{ $value | safeHTML }} 
+          </div>
+          {{ end }}
+        {{ end }}
       </figure>
     {{ end }}
   </div>
