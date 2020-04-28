@@ -38,6 +38,9 @@ function $initHighlight(block, flags) {
   console.log(Array.every(classes, Boolean));
 }
 <!-- endtab -->
+<!-- desc js -->
+test description javascript
+<!-- enddesc -->
 <!-- tab css -->
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   body:first-of-type pre::after {
@@ -65,6 +68,19 @@ li[lang=ru] {
   width: 100%;
 }
 <!-- endtab -->
+<!-- desc css -->
+some table test
+<table>
+    <tr>
+      <td>pros</td>
+      <td>cons</td>
+    </tr>
+    <tr>
+      <td>- test</td>
+      <td>- test</td>
+    </tr>
+</table>
+<!-- enddesc -->
 <!-- tab html -->
 <?xml version="1.0"?>
 <response value="ok" xml:lang="en">
