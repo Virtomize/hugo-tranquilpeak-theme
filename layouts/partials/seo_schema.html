@@ -1,0 +1,36 @@
+{{ $keywords := (slice)}}
+{{ if .IsHome }}
+  {{ $keywords = (.Site.Params.keywords) }}
+{{ else }}
+  {{ if isset .Params "keywords" }}
+    {{ $keywords = (.Params.keywords) }}
+  {{ end }}
+{{ end }}
+{{ $len := (len $keywords) }}
+<meta name="keywords" content="{{ range $i, $e := $keywords }}{{ $e }}{{ if ne (add $i 1) $len }}, {{ end }}{{ end }}">
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "mainEntityOfPage": {
+  "@type": "WebPage",
+  "@id": {{ .Site.BaseURL }}
+  },
+  "articleSection": "{{ if .IsHome }}Home{{ else }}{{ if eq .Section ""}}{{ .Site.Title }}{{ else }}{{ .Section }}{{ end }}{{ end }}",
+  "name": "{{ .Title }}",
+  "headline": "{{ .Title }}",
+  "description": "{{ if .Description }}{{ .Description }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ end }}{{ end }}",
+  "inLanguage": "{{ $.Site.Language.Lang }}",
+  "author": "{{ .Site.Author.name }}",
+  "creator": "{{ .Site.Author.name }}",
+  "publisher": "{{ .Site.Author.name }}",
+  "accountablePerson": "{{ .Site.Author.email }}",
+  "copyrightHolder": "{{ .Site.Params.copyright }}",
+  "copyrightYear": "{{ .Date.Format "2006" | safeHTML }}",
+  "datePublished": "{{ .Date.Format "2006-01-02" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+  "url": {{ .Permalink }},
+  "wordCount": "{{ if .IsHome }}{{ .Site.Params.wordcount }}{{ else }}{{ if eq .WordCount 0 }}{{ .Params.Wordcount }}{{ else }}{{ .WordCount }}{{ end }}{{ end }}",
+  "keywords": [{{ range $i, $e := $keywords }}"{{ $e }}"{{ if ne (add $i 1) $len }},{{ end }}{{ end }}]
+}
+</script>

@@ -47,6 +47,7 @@
     <!--STYLES-->
     {{ $styles := resources.Get "css/style.css" | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $styles.Permalink }}" integrity="{{ $styles.Data.Integrity }}"/>
+    {{ partial "seo_schema.html" . }}
     <!--STYLES END-->
     {{ range .Site.Params.customCSS }}
       {{ if isset . "href" }}
