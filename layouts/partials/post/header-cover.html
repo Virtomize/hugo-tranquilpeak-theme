@@ -2,7 +2,7 @@
   <div class="post-header-cover
               {{ if .Params.metaalignment }}text-{{ .Params.metaalignment }}{{ else }}text-left{{ end }}
               {{ with .Params.coversize }}post-header-cover--{{ . }}{{ end }}"
-       style="background-image:url('{{ .Params.coverimage | relURL }}')"
+       style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('{{ .Params.coverimage | relURL }}'); background-size: cover;"
        data-behavior="{{ $.Scratch.Get "sidebarBehavior" }}">
     {{ if or (eq .Params.covermeta "in") (not .Params.covermeta) }}
       {{ partial "post/header.html" . }}
