@@ -62,22 +62,15 @@
           </li>
         {{ end }}
       {{ end }}
-      {{ if and (not (eq .Params.comments false)) .Site.DisqusShortname }}
+      {{ if (eq .Params.comments true) }}
+        {{ if .Site.DisqusShortname }}
         <li class="post-action">
           <a class="post-action-btn btn btn--default" href="#disqus_thread">
             <i class="fa fa-comment-o"></i>
           </a>
         </li>
-      {{ end }}
-      <li class="post-action">
-        {{ if findRE "<!--\\s*[t|T][o|O][c|C]\\s*-->" .Content }}
-          <a class="post-action-btn btn btn--default" href="#table-of-contents">
-        {{ else }}
-          <a class="post-action-btn btn btn--default" href="#">
         {{ end }}
-          <i class="fa fa-list"></i>
-        </a>
-      </li>
+      {{ end }}
     </ul>
   {{ end }}
 </div>
