@@ -1,12 +1,30 @@
-{{ $tabs := findRE "<!-- *[Tt][Aa][Bb] +(\\w*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Tt][Aa][Bb] *-->" .Inner }}
-{{ $desc := findRE "<!-- *[Dd][Ee][Ss][Cc] +(\\w*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Dd][Ee][Ss][Cc] *-->" .Inner }}
+{{ $tabs := findRE "<!-- *[Tt][Aa][Bb] +([\\w\\s]*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Tt][Aa][Bb] *-->" .Inner }}
 {{ range $index,$value := $tabs }}
-  {{ $language := replaceRE "<!-- *[Tt][Aa][Bb] +(\\w*) *-->" "$1" (index (findRE "<!-- *[Tt][Aa][Bb] +(\\w*) *-->" .) 0) }}
+  {{ $language := replaceRE "<!-- *[Tt][Aa][Bb] +([\\w\\s]*) *-->" "$1" (index (findRE "<!-- *[Tt][Aa][Bb] +([\\w\\s]*) *-->" .) 0) }}
+  {{ $tabTitle := $language  }}
+
+  {{ $tabParamsSlice := (split $language " ") }}
+  {{ if ge (len $tabParamsSlice) 3 }}
+    {{ range $elem_key,$elem_val := $tabParamsSlice }}
+      {{ $elem_key }} {{ $elem_val }}
+      {{ if eq $elem_key 0}}
+        {{ $language = $elem_val }}
+        {{ $tabTitle = $elem_val }}
+      {{ end }}
+      {{ if eq $elem_key 1}}
+        {{ $tabTitle = $elem_val }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
   {{ $language := lower $language }}
-  {{ $content := replaceRE "<!-- *[Tt][Aa][Bb] +(\\w*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Tt][Aa][Bb] *-->" "$2" . }}
+  {{ $content := replaceRE "<!-- *[Tt][Aa][Bb] +([\\w\\s]*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Tt][Aa][Bb] *-->" "$2" . }}
   {{ $.Scratch.Add "tc-languages" (slice $language) }}
+  {{ $.Scratch.Add "tc-tab-titles" (slice $tabTitle) }}
   {{ $.Scratch.Add "tc-content" (slice $content) }}
 {{ end }}
+
+{{ $desc := findRE "<!-- *[Dd][Ee][Ss][Cc] +(\\w*) *-->\\n([\\w\\W\\s\\S]*?)<!-- *[Ee][Nn][Dd][Dd][Ee][Ss][Cc] *-->" .Inner }}
 {{ range $index,$value := $desc }}
   {{ $language := replaceRE "<!-- *[Dd][Ee][Ss][Cc] +(\\w*) *-->" "$1" (index (findRE "<!-- *[Dd][Ee][Ss][Cc] +(\\w*) *-->" .) 0) }}
   {{ $language := lower $language }}
@@ -14,6 +32,7 @@
   {{ $.Scratch.Add "dc-languages" (slice $language) }}
   {{ $.Scratch.Add "dc-content" (slice $content) }}
 {{ end }}
+
 {{ if .IsNamedParams }}
   {{ $.Scratch.Add "tc-title" (.Get "title") }}
   {{ $.Scratch.Add "tc-url" (.Get "url") }}
@@ -34,14 +53,14 @@
     {{ end }}
     <ul class="tabs">
       {{ range $index, $value := $.Scratch.Get "tc-languages" }}
-        <li class="tab {{ if eq $index 0 }}active{{ end }}">{{ . }}</li>
+        <li class="tab {{ if eq $index 0 }}active{{ end }}">{{ index ($.Scratch.Get "tc-tab-titles") $index }}</li>
       {{ end }}
     </ul>
-  </figcaption> 
+  </figcaption>
   <div class="tabs-content">
     {{ range $index, $value := $.Scratch.Get "tc-content" }}
       {{ $trimmedContent := trim $value "\n" }}
-      <figure class="highlight language-{{ index ($.Scratch.Get "tc-languages") $index }}" style="display: {{ if eq $index 0 }}block{{ else }}none{{ end }};">   
+      <figure class="highlight language-{{ index ($.Scratch.Get "tc-languages") $index }}" style="display: {{ if eq $index 0 }}block{{ else }}none{{ end }};">
         <table>
           <tbody>
             <tr>
@@ -57,7 +76,7 @@
         {{ range $dindex, $value := $.Scratch.Get "dc-content" }}
           {{ if eq ( index ($.Scratch.Get "tc-languages") $index ) ( index ($.Scratch.Get "dc-languages") $dindex ) }}
           <div class="codeblock--tabbed-description">
-           {{ $value | safeHTML }} 
+           {{ $value | safeHTML }}
           </div>
           {{ end }}
         {{ end }}
