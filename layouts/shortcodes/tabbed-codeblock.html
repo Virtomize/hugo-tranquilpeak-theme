@@ -5,8 +5,7 @@
 
   {{ $tabParamsSlice := (split $language " ") }}
   {{ if ge (len $tabParamsSlice) 3 }}
-    {{ range $elem_key,$elem_val := $tabParamsSlice }}
-      {{ $elem_key }} {{ $elem_val }}
+    {{ range $elem_key,$elem_val := $tabParamsSlice }}      
       {{ if eq $elem_key 0}}
         {{ $language = $elem_val }}
         {{ $tabTitle = $elem_val }}
