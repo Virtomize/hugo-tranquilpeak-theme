@@ -10,6 +10,8 @@
 <!--EXTERNAL SCRIPTS END-->
 <!--SCRIPTS-->
 <script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+{{ $js := resources.Get "js/toc.js" | fingerprint }}
+<script src="{{ $js.RelPermalink }}"></script>
 <!--SCRIPTS END-->
 {{ range .Site.Params.customJS }}
   {{ if isset . "src" }}

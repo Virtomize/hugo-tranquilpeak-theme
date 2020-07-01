@@ -3,6 +3,14 @@
     <div id="blog">
       {{ partial "header.html" . }}
       {{ partial "sidebar.html" . }}
+      {{ if gt (len .Page.TableOfContents) 32 }}
+        {{ partial "toc.html" . }}
+        <!--
+        <aside id="toc">
+          {{ .Page.TableOfContents }}
+        </aside>
+        -->
+      {{ end }}
       {{ partial "post/header-cover.html" . }}
       <div id="main" data-behavior="{{ .Scratch.Get "sidebarBehavior" }}"
         class="{{ with .Params.coverimage }}hasCover{{ end }}
@@ -15,11 +23,6 @@
           {{ if or (not .Params.coverimage) (eq .Params.covermeta "out") }}
             {{ partial "post/header.html" . }}
           {{ end }}
-              {{ if gt (len .Page.TableOfContents) 32 }}
-              <aside id="toc">
-                {{ .Page.TableOfContents }}
-              </aside>
-              {{ end }}
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               {{ (replaceRE "<!--\\s*[t|T][o|O][c|C]\\s*-->" (printf "<h1 id=\"table-of-contents\">%s</h1>%s" (i18n "post.toc") .TableOfContents) .Content) | safeHTML }}
