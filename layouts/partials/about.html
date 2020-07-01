@@ -15,9 +15,6 @@
         {{ . | markdownify }}
       </div>
     {{ end }}
-    <div id="about-card-job">
-      <a href="{{ .Site.Author.impressum }}" target="_blank">Impressum</a>
-    </div>
     {{ with .Site.Author.location }}
       <div id="about-card-location">
         <i class="fa fa-map-marker"></i>
