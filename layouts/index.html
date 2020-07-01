@@ -11,7 +11,14 @@
         <section class="postShorten-group main-content-wrap">
           {{ $paginator := .Paginate (where .Site.RegularPages "Type" "post") }}
           {{ range $paginator.Pages }}
-            {{ .Render "summary" }}
+            {{ if .Params.allwaysOnTop }}
+              {{ .Render "summary" }}
+            {{ end }}
+          {{ end }}
+          {{ range $paginator.Pages }}
+            {{ if not .Params.allwaysOnTop }}
+              {{ .Render "summary" }}
+            {{ end }}
           {{ end }}
           {{ partial "pagination.html" . }}
         </section>
