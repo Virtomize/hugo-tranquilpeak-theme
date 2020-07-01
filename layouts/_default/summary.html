@@ -24,13 +24,6 @@
 {{ end }}
 <article class="postShorten postShorten--thumbnailimg-{{ .Scratch.Get "thumbnailImagePosition" }}" itemscope itemType="http://schema.org/BlogPosting">
   <div class="postShorten-wrap">
-    {{ if and (.Scratch.Get "thumbnailImage") (eq (.Scratch.Get "thumbnailImagePosition") "top")}}
-      <a href="{{ .Permalink }}">
-        <div class="postShorten-thumbnailimg">
-          <img alt="" itemprop="image" src="{{ .Scratch.Get "thumbnailImage" }}"/>
-        </div>
-      </a>
-    {{ end }}
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="{{ .Permalink }}">
@@ -39,6 +32,13 @@
       </h1>
       {{ partial "post/meta" . }}
     </div>
+    {{ if and (.Scratch.Get "thumbnailImage") (eq (.Scratch.Get "thumbnailImagePosition") "top")}}
+      <a href="{{ .Permalink }}">
+        <div class="postShorten-thumbnailimg">
+          <img alt="" itemprop="image" src="{{ .Scratch.Get "thumbnailImage" }}"/>
+        </div>
+      </a>
+    {{ end }}
     <div class="postShorten-excerpt" itemprop="articleBody">
       {{ if .Params.Summary }}
         {{ .Params.Summary | markdownify }}
