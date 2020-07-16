@@ -19,7 +19,7 @@
   "articleSection": "{{ if .IsHome }}Home{{ else }}{{ if eq .Section ""}}{{ .Site.Title }}{{ else }}{{ .Section }}{{ end }}{{ end }}",
   "name": "{{ .Title }}",
   "headline": "{{ .Title }}",
-  "description": "{{ if .Description }}{{ .Description | plainify | chomp }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | chomp }}{{ end }}{{ end }}",
+  "description": "{{ if .Description }}{{ .Description | plainify | chomp }}{{ else }}{{if .IsPage}}{{ .Summary | plainify | chomp }}{{ else }}{{ .Site.Title }}{{ end }}{{ end }}",
   "inLanguage": "{{ $.Site.Language.Lang }}",
   "author": "{{ .Site.Author.name }}",
   "creator": "{{ .Site.Author.name }}",
