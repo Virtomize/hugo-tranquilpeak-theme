@@ -6,5 +6,20 @@
       </time>
     {{ end }}
     {{ partial "post/category.html" . }}
+    {{ if (isset .Params "authors") }}
+      </br>
+      <div class="authors">
+      {{- range .Params.authors }}
+        {{- with $.Site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize .)) }}
+          <figure> 
+            <img class="author-img" src="{{ .Params.photo | absURL }}" alt=""/>
+            <figcaption>
+              <a href="{{ .Permalink }}">{{ .Params.name }}</a>
+            </figcaption>
+          </figure> 
+        {{ end }}
+      {{ end }}
+      </div>
+    {{ end }}
   </div>
 {{ end }}

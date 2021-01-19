@@ -30,7 +30,7 @@
           {{ .Title }}
         </a>
       </h1>
-      {{ partial "post/meta" . }}
+      {{ partial "post/summary-meta" . }}
     </div>
     {{ if and (.Scratch.Get "thumbnailImage") (eq (.Scratch.Get "thumbnailImagePosition") "top")}}
       <a href="{{ .Permalink }}">

@@ -1,0 +1,18 @@
+{{ if not (eq .Params.showMeta false) }}
+  <div class="postShorten-meta post-meta">
+    {{ if (isset .Params "authors") }}
+    by
+      {{- range $i, $e := .Params.authors }}
+        {{- with $.Site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize .)) }}
+          <a href="{{ .Permalink }}">{{ .Params.name }}</a>,
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ if not (eq .Params.showDate false)  }}
+      <time itemprop="datePublished" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+        {{ partial "internal/date.html" . }}
+      </time>
+    {{ end }}
+    {{ partial "post/category.html" . }}
+  </div>
+{{ end }}

@@ -1,0 +1,40 @@
+{{ partial "head.html" . }}
+  <body>
+    <div id="blog">
+      {{ partial "header.html" . }}
+      {{ partial "sidebar.html" . }}
+      <div id="main" data-behavior="{{ .Scratch.Get "sidebarBehavior" }}"
+        class="{{ with .Params.coverimage }}hasCover{{ end }}
+               {{ if eq .Params.covermeta "out" }}hasCoverMetaOut{{ else }}hasCoverMetaIn{{ end }}
+               {{ with .Params.coverCaption }}hasCoverCaption{{ end }}">
+        <article class="post">
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+        <h1>{{ .Params.name }}</h1>
+        <img class="author-img" src="{{ .Params.photo | absURL }}" alt=""/>
+
+        <h2>Bio</h2>
+        {{ .Content }}
+        {{ with .Params.twitter }}
+        <p>
+          <a href="https://twitter.com/{{ substr . 1 }}">
+            Follow {{ $.Params.name }} on Twitter
+          </a>
+        </p>
+        {{ end }}
+
+        <h2>Articles</h2>
+        <ul>
+          {{ range .Data.Pages }}
+          <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+          {{ end }}
+        </ul>
+
+
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </body>
+{{ partial "foot.html" . }}
