@@ -1,0 +1,8 @@
+<!-- code adapted from https://www.codepalm.de/post/youtube-2-klick-loesung/ -->
+<div class="video_wrapper" style="background-image: url( {{ .Site.Params.youtubeConsentBgImage | absURL }});">
+  <div class="video_trigger text-center" data-source="{{ .Get "id" }}" data-type="youtube">
+  <p>{{ .Site.Params.youtubeConsentText | safeHTML}}</p>
+    <input type="button" class="btn" value="{{ .Site.Params.youtubeConsentBtn }}" />
+  </div>
+  <div class="video_layer"><iframe src="" width="1280" height="720" border="0" data-scaling="true" data-format="16:9"></iframe></div>
+</div>
