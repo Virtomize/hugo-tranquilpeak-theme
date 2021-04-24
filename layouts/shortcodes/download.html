@@ -1,0 +1,8 @@
+<!-- code adapted from https://www.codepalm.de/post/youtube-2-klick-loesung/ -->
+<div class="newsletter_wrapper" style="background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url({{ .Site.Params.downloadBgImage | absURL}});")>
+  <div class="newsletter text-center">
+    <h2>{{ .Site.Params.downloadHeader | safeHTML}}</h2>
+    <p>{{ .Site.Params.downloadText | safeHTML}}</p>
+    <a target="_blank" href="{{ .Site.Params.downloadLink }}" class="btn">{{ .Site.Params.downloadBtn }}</a>
+  </div>
+</div>
