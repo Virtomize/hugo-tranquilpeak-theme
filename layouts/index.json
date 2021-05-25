@@ -1,0 +1,63 @@
+{
+    "version": "https://jsonfeed.org/version/1.1",
+    "title": {{ .Site.Title | jsonify  }},
+    "home_page_url": {{ .Permalink | jsonify }},
+    {{ with  .OutputFormats.Get "json" -}}
+    "feed_url": {{ .Permalink | jsonify  }},
+    {{- end }}
+    {{ if .Site.Author -}}
+     "authors": [
+        {
+          "name": {{ .Site.Author.name | jsonify }}
+        }
+    ],
+    {{ end -}}
+    {{ if .Site.Pages -}}
+    "items": [
+        {{ range $index, $element := first 100 .Site.RegularPages -}}
+        {{ if eq $element.Section "post" -}}
+            {{ if $index }},{{end -}} {
+                {{ if $element.Params.authors -}}
+                "authors": [
+                  {{ range $ai, $ae := $element.Params.authors -}}
+                  {{ if $ai }},{{end -}} {
+                    "name": {{ $ae | jsonify }},
+                    {{- with $.Site.GetPage "taxonomyTerm" (printf "authors/%s" (urlize .)) }}
+                    "url": "{{ .Permalink }}"
+                    {{ end -}}
+                  }
+                  {{ end -}}
+                ],
+                {{ end -}}
+                {{ if $element.Params.tags -}}
+                "tags": [
+                  {{ range $ti, $te := $element.Params.tags -}}
+                  {{ if $ti }},{{end -}}"{{ $te }}"
+                  {{ end -}}
+                ],
+                {{ end -}}
+                {{ if $element.Params.youtube -}}
+                "attachments": [
+                  {{ range $li, $le := $element.Params.youtube -}}
+                  {{ if $li }},{{ end -}}{
+                    "url": "https://www.youtube-nocookie.com/embed/{{ $le }}",
+                    "mime_type": "text/uri-list"
+                  }
+                  {{ end -}}
+                ],
+                {{ end -}}
+                "title": {{ $element.Title | jsonify }},
+                "id": {{ $element.Permalink | jsonify }},
+                "url": {{ $element.Permalink | jsonify }},
+                "summary": {{ $element.Summary | plainify | jsonify }},
+                {{ if eq $element.Type "link" -}}
+                "external_url": {{ $element.Params.link | jsonify -}},
+                {{ end -}}
+                "content_text": {{ $element.Plain | plainify | jsonify }},
+                "date_published": {{ $element.Date.Format "2006-02-01T15:04:05-0700" | jsonify }}
+            }
+            {{ end -}}
+        {{ end -}}
+    ]
+    {{ end -}}
+}
