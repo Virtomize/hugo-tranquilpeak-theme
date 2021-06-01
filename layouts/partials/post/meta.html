@@ -1,11 +1,13 @@
 {{ if not (eq .Params.showMeta false) }}
   <div class="postShorten-meta post-meta text-center">
     {{ if not (eq .Params.showDate false)  }}
+      <i class="calendar fa fa-calendar-check-o" aria-hidden="true"></i>
       <time itemprop="datePublished" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
         {{ partial "internal/date.html" . }}
       </time>
     {{ end }}
     {{ partial "post/category.html" . }}
+    {{ partial "post/readtime.html" . }}
     {{ if (isset .Params "authors") }}
       </br>
       <div class="authors">
