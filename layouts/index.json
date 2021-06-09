@@ -36,16 +36,28 @@
                   {{ end -}}
                 ],
                 {{ end -}}
-                {{ if $element.Params.youtube -}}
                 "attachments": [
+                  {{ if $element.Params.thumbnailImage -}}
+                    {
+                    "url": "{{ $element.Params.thumbnailImage | absURL}}",
+                    "mime_type": "{{ if in $element.Params.thumbnailImage ".jpg" }}image/jpg{{ else }}{{ if in $element.Params.thumbnailImage ".png" }}image/png{{ else }}{{ if in $element.Params.thumbnailImage ".svg" }}image/svg{{ end }}{{ end }}{{ end }}",
+                    "title": "thumbnail"
+                    }
+                  {{ end -}}
+                  {{ if $element.Params.coverImage -}}
+                  {{ if $element.Params.thumbnailImage -}},{{ end }}{
+                    "url": "{{ $element.Params.coverImage | absURL}}",
+                    "mime_type": "{{ if in $element.Params.coverImage ".jpg" }}image/jpg{{ else }}{{ if in $element.Params.coverImage ".png" }}image/png{{ else }}{{ if in $element.Params.coverImage ".svg" }}image/svg{{ end }}{{ end }}{{ end }}",
+                    "title": "cover"
+                    }
+                  {{ end -}}
                   {{ range $li, $le := $element.Params.youtube -}}
-                  {{ if $li }},{{ end -}}{
+                  {{ if or (or ($li) ($element.Params.thumbnailImage)) ($element.Params.coverImage) }},{{ end -}}{
                     "url": "https://www.youtube-nocookie.com/embed/{{ $le }}",
                     "mime_type": "text/uri-list"
                   }
                   {{ end -}}
                 ],
-                {{ end -}}
                 "title": {{ $element.Title | jsonify }},
                 "id": {{ $element.Permalink | jsonify }},
                 "url": {{ $element.Permalink | jsonify }},
