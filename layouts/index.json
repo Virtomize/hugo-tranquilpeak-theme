@@ -2,6 +2,7 @@
     "version": "https://jsonfeed.org/version/1.1",
     "title": {{ .Site.Title | jsonify  }},
     "home_page_url": {{ .Permalink | jsonify }},
+    "language": {{ .Site.LanguageCode | jsonify }},
     {{ with  .OutputFormats.Get "json" -}}
     "feed_url": {{ .Permalink | jsonify  }},
     {{- end }}
@@ -14,7 +15,7 @@
     {{ end -}}
     {{ if .Site.Pages -}}
     "items": [
-        {{ range $index, $element := first 100 .Site.RegularPages -}}
+        {{ range $index, $element := first 100 .Site.RegularPages.ByPublishDate.Reverse -}}
         {{ if eq $element.Section "post" -}}
             {{ if $index }},{{end -}} {
                 {{ if $element.Params.authors -}}
@@ -66,6 +67,12 @@
                 "external_url": {{ $element.Params.link | jsonify -}},
                 {{ end -}}
                 "content_text": {{ $element.Plain | plainify | jsonify }},
+                {{ if $element.Params.thumbnailImage -}}
+                "image": "{{ $element.Params.thumbnailImage | absURL }}",
+                {{ end -}}
+                {{ if $element.Params.coverImage -}}
+                "banner_image": "{{ $element.Params.coverImage | absURL}}",
+                {{ end -}}
                 "date_published": {{ $element.Date.Format "2006-02-01T15:04:05-0700" | jsonify }}
             }
             {{ end -}}
