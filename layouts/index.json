@@ -54,7 +54,7 @@
                   {{ end -}}
                   {{ range $li, $le := $element.Params.youtube -}}
                   {{ if or (or ($li) ($element.Params.thumbnailImage)) ($element.Params.coverImage) }},{{ end -}}{
-                    "url": "https://www.youtube-nocookie.com/embed/{{ $le }}",
+                    "url": "https://youtube.com/watch?v={{ $le }}",
                     "mime_type": "text/uri-list",
                     "title": "youtube"
                   }
